@@ -1,3 +1,4 @@
+/*
 function createNode(data=null, next=null) {
     return {
         data,
@@ -112,12 +113,170 @@ s.push("joe");
 
 //palindrome('A car, a man, a maraca.');
 
-console.log(isMatching('{[]}'), '{[]}');
-console.log(isMatching('{[}'), '{[}');
-console.log(isMatching('{[]][}'), '{[]][}');
-console.log(isMatching('{[]}'), '{[]}');
-console.log(isMatching('{)'), '{)');
-console.log(isMatching('(('), '((');
-console.log(isMatching('(x'), '(x');
-console.log(isMatching('{(})'), '{(})');
-console.log(isMatching('(hello)'), '(hello)');
+// console.log(isMatching('{[]}'), '{[]}');
+// console.log(isMatching('{[}'), '{[}');
+// console.log(isMatching('{[]][}'), '{[]][}');
+// console.log(isMatching('{[]}'), '{[]}');
+// console.log(isMatching('{)'), '{)');
+// console.log(isMatching('(('), '((');
+// console.log(isMatching('(x'), '(x');
+// console.log(isMatching('{(})'), '{(})');
+// console.log(isMatching('(hello)'), '(hello)');
+
+
+
+*/
+// ========================================================================
+// ========================================================================
+// ========================================================================
+// ========================================================================
+// ========================================================================
+// ========================================================================
+// ========================================================================
+// ========================================================================
+// ========================================================================
+// ========================================================================
+// QUEUES
+
+function createNode(data=null, next=null, prev=null) {
+    return {
+        data,
+        next,
+        prev
+    };
+}
+
+class Queue {
+    constructor() {
+        this.first = null;
+        this.last = null;
+    }
+
+    enqueue(data) {
+        const node = createNode(data);
+
+        if (this.last) {
+            node.next = this.last;
+            this.last.prev = node;
+        }
+
+        this.last = node;
+
+        if (this.first === null) {
+            this.first = node;
+        }
+    }
+
+    dequeue() {
+        if (this.first === null) {
+            return;
+        }
+
+        const node = this.first;
+        this.first = node.prev;
+
+        if (node === this.last) {
+            this.last = null;
+        }
+
+        return node.data;
+    }
+}
+
+//other functions that uses the queue class
+
+function display(q) {
+    let node = q.first;
+    while (node !== null) {
+        console.log(node.data);
+        node = node.prev;
+    }
+}
+
+// let q = new Queue();
+// q.enqueue("Tauhida");
+// q.enqueue("Joe");
+// q.enqueue("Tim");
+// display(q);
+// console.log(q.dequeue());
+// display(q);
+// q.enqueue("Alison");
+// q.enqueue("Chris");
+// console.log(q.dequeue());
+// display(q);
+
+const dancers = [
+  {
+    name: 'Jane',
+    gender: 'f'
+  },
+  {
+    name: 'Frank',
+    gender: 'm'
+  },
+  {
+    name: 'John',
+    gender: 'm'
+  },
+  {
+    name: 'Sherlock',
+    gender: 'm'
+  },
+  {
+    name: 'Madonna',
+    gender: 'f'
+  },
+  {
+    name: 'David',
+    gender: 'm'
+  },
+  {
+    name: 'Christopher',
+    gender: 'm'
+  },
+  {
+    name: 'Beyonce',
+    gender: 'f'
+  },
+]
+
+function squareDance(dancers) {
+  let sparesQ = new Queue();
+  for (let i=0; i<dancers.length; i++){
+    if (sparesQ.last === null){
+      sparesQ.enqueue(dancers[i]);
+    }
+    else if (dancers[i].gender != sparesQ.first.data.gender){
+      console.log(`Matched dancers: ${dancers[i].name} and ${sparesQ.first.data.name}`);
+      sparesQ.dequeue();
+    }
+    else {
+      sparesQ.enqueue(dancers[i]);
+    }
+  }
+  console.log(`The remaining spare dancer queue: `);
+  display(sparesQ);
+}
+//squareDance(dancers);
+
+
+const people = ['Beyonce', 'Christopher', 'David', 'Madonna', 'Sherlock', 'John', 'Frank', 'Jane', 'Bill', 'Tom'];
+
+function bankLine(people) {
+  let bankQ = new Queue();
+  for (let i=0; i<people.length; i++){
+    bankQ.enqueue(people[i]);
+  }
+  while (bankQ.last != null) {
+    if (Math.random() > .75){
+      console.log(`${bankQ.first.data} to the back of the line!`);
+      bankQ.enqueue(bankQ.dequeue());
+    }
+    else {
+      console.log(`${bankQ.first.data} has all their paperwork!`);
+      bankQ.dequeue();
+    }
+  }
+}
+
+bankLine(people);
